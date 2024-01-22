@@ -10,22 +10,11 @@
             position: absolute;
         }
 
-        #paddleLeft {
-            top: 5px;
-        }
-
-        #paddleRight {
-            left: 800px;
-            top: 0;
-        }
-
         #ball {
             position: absolute;
             background-color: black;
             width: 6px;
             height: 6px;
-            top: 10px;
-            left: 400px;
             border-radius: 3px;
         }
     </style>
@@ -39,35 +28,49 @@
     <script>
         let paddleLeft = document.getElementById("paddleLeft");
         let paddleRight = document.getElementById("paddleRight");
-        let ball = document.getElementById("ball")
-        function movePaddle(paddle, direction) {
-            let top = parseInt(paddle.style.top) || 0;
-            paddle.style.top = `${top + direction}px`;
-        }
+        let ball = document.getElementById("ball");
+        let paddleLeftX = 5;
+        let paddleLeftY = 5;
+        let paddleRightX = 800;
+        let paddleRightY = 5;
+        let ballX = 400;
+        let ballY = 5;
+        paddleLeft.style.left = `${paddleLeftX}px`;
+        paddleRight.style.left = `${paddleRightX}px`;
+
         document.onkeydown = function (ev) {
             if (ev.key == "ArrowDown") {
-                movePaddle(paddleLeft, 10);
+                paddleLeftY += 10;
             }
             if (ev.key == "ArrowUp") {
-                movePaddle(paddleLeft, -10);
+                paddleLeftY -= 10;
             }
             if (ev.key == "w") {
-                movePaddle(paddleRight, -10);
+                paddleRightY -= 10;
             }
             if (ev.key == "s") {
-                movePaddle(paddleRight, 10);
+                paddleRightY += 10;
             }
         }
         let ballDirectionY = 0;
         let ballDirectionX = 1;
-        function moveBall() {
-            let top = parseInt(ball.style.top) || 0;
-            ball.style.top = `${top + ballDirectionY}px`;
-            let left = parseInt(ball.style.left) || 0;
-            ball.style.left = `${left + ballDirectionX}px`;
-            window.requestAnimationFrame(moveBall);
+        function playGame() {
+
+            if (ballX > paddleRightX) {
+                ballDirectionX = -1;
+            }
+            if (ballX < paddleLeftX) {
+                ballDirectionX = 1;
+            }
+            paddleLeft.style.top = `${paddleLeftY}px`;
+            paddleRight.style.top = `${paddleRightY}px`;
+            ballY += ballDirectionY;
+            ball.style.top = `${ballY}px`;
+            ballX += ballDirectionX;
+            ball.style.left = `${ballX}px`;
+            window.requestAnimationFrame(playGame);
         }
-        window.requestAnimationFrame(moveBall);
+        window.requestAnimationFrame(playGame);
 
     </script>
 </body>

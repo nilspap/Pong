@@ -17,6 +17,22 @@
             height: 6px;
             border-radius: 3px;
         }
+
+        #scorePlayerLeft {
+            left: 340px;
+            text-align: right;
+            width: 50px;
+        }
+
+        #scorePlayerRight {
+            left: 410px;
+        }
+
+        .score {
+            font-size: xx-large;
+            font-family: monospace;
+            position: absolute;
+        }
     </style>
 
 </head>
@@ -25,6 +41,8 @@
     <div id="paddleLeft" class="paddle"></div>
     <div id="ball"></div>
     <div id="paddleRight" class="paddle"></div>
+    <div id="scorePlayerLeft" class="score">0</div>
+    <div id="scorePlayerRight" class="score">0</div>
     <script>
         const gameWidth = 800;
         const gameHeight = 200;
@@ -34,8 +52,12 @@
         const paddleLeft = document.getElementById("paddleLeft");
         const paddleRight = document.getElementById("paddleRight");
         const ball = document.getElementById("ball");
+        const scorePlayerLeftDiv = document.getElementById("scorePlayerLeft");
+        const scorePlayerRightDiv = document.getElementById("scorePlayerRight");
         const paddleLeftX = 5;
         const paddleRightX = gameWidth;
+        let scorePlayerLeft = 0;
+        let scorePlayerRight = 0;
         let paddleLeftY = 5;
         let paddleRightY = 5;
         let ballX = gameWidth / 2;
@@ -67,13 +89,20 @@
 
         }
         function resetGame() {
-            ballX = gameWidth / 2;
+
+            ballDirectionY = 0;
+            scorePlayerLeftDiv.innerText = scorePlayerLeft;
+            scorePlayerRightDiv.innerText = scorePlayerRight;
         }
 
         function playGame() {
 
             if (ballX > paddleRightX) {
                 if (ballY < paddleRightY || ballY > (paddleRightY + paddleHeight)) {
+                    scorePlayerLeft += 1;
+                    ballX = paddleRightX;
+                    ballY = paddleRightY + paddleHeight / 2;
+                    ballDirectionX = -ballSpeed;
                     resetGame();
 
                 } else {
@@ -86,6 +115,10 @@
             }
             if (ballX < paddleLeftX) {
                 if (ballY < paddleLeftY || ballY > (paddleLeftY + paddleHeight)) {
+                    scorePlayerRight += 1;
+                    ballX = paddleLeftX;
+                    ballY = paddleLeftY + paddleHeight / 2;
+                    ballDirectionX = ballSpeed;
                     resetGame();
                 } else {
                     if (spin != 0) {

@@ -26,41 +26,76 @@
     <div id="ball"></div>
     <div id="paddleRight" class="paddle"></div>
     <script>
-        let paddleLeft = document.getElementById("paddleLeft");
-        let paddleRight = document.getElementById("paddleRight");
-        let ball = document.getElementById("ball");
-        let paddleLeftX = 5;
+        const gameWidth = 800;
+        const gameHeight = 200;
+        const paddleHeight = 50;
+        const ballSpeed = 5;
+        const paddleSpeed = 20;
+        const paddleLeft = document.getElementById("paddleLeft");
+        const paddleRight = document.getElementById("paddleRight");
+        const ball = document.getElementById("ball");
+        const paddleLeftX = 5;
+        const paddleRightX = gameWidth;
         let paddleLeftY = 5;
-        let paddleRightX = 800;
         let paddleRightY = 5;
-        let ballX = 400;
+        let ballX = gameWidth / 2;
         let ballY = 5;
+        let ballDirectionY = 0;
+        let ballDirectionX = ballSpeed;
+        let spin = 0;
         paddleLeft.style.left = `${paddleLeftX}px`;
         paddleRight.style.left = `${paddleRightX}px`;
 
         document.onkeydown = function (ev) {
-            if (ev.key == "ArrowDown") {
-                paddleLeftY += 10;
-            }
-            if (ev.key == "ArrowUp") {
-                paddleLeftY -= 10;
+            spin = 0;
+            if (ev.key == "s") {
+                paddleLeftY += paddleSpeed;
+                spin = 1;
             }
             if (ev.key == "w") {
-                paddleRightY -= 10;
+                paddleLeftY -= paddleSpeed;
+                spin = -1;
             }
-            if (ev.key == "s") {
-                paddleRightY += 10;
+            if (ev.key == "ArrowDown") {
+                paddleRightY += paddleSpeed;
+                spin = 1;
             }
+            if (ev.key == "ArrowUp") {
+                paddleRightY -= paddleSpeed;
+                spin = -1;
+            }
+
         }
-        let ballDirectionY = 0;
-        let ballDirectionX = 1;
+        function resetGame() {
+            ballX = gameWidth / 2;
+        }
+
         function playGame() {
 
             if (ballX > paddleRightX) {
-                ballDirectionX = -1;
+                if (ballY < paddleRightY || ballY > (paddleRightY + paddleHeight)) {
+                    resetGame();
+
+                } else {
+                    if (spin != 0) {
+                        ballDirectionY += spin;
+                    }
+
+                    ballDirectionX = -ballSpeed;
+                }
             }
             if (ballX < paddleLeftX) {
-                ballDirectionX = 1;
+                if (ballY < paddleLeftY || ballY > (paddleLeftY + paddleHeight)) {
+                    resetGame();
+                } else {
+                    if (spin != 0) {
+                        ballDirectionY += spin;
+                    }
+                    ballDirectionX = ballSpeed;
+                }
+            }
+            if (ballY < 0 || ballY > gameHeight) {
+                ballDirectionY = -ballDirectionY;
             }
             paddleLeft.style.top = `${paddleLeftY}px`;
             paddleRight.style.top = `${paddleRightY}px`;
@@ -71,6 +106,7 @@
             window.requestAnimationFrame(playGame);
         }
         window.requestAnimationFrame(playGame);
+
 
     </script>
 </body>

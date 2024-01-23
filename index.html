@@ -47,6 +47,7 @@
         const gameWidth = 800;
         const gameHeight = 200;
         const paddleHeight = 50;
+        const ballHeight = 6;
         const ballSpeed = 5;
         const paddleSpeed = 20;
         const paddleLeft = document.getElementById("paddleLeft");
@@ -56,6 +57,8 @@
         const scorePlayerRightDiv = document.getElementById("scorePlayerRight");
         const paddleLeftX = 5;
         const paddleRightX = gameWidth;
+        const plop = new Audio("plop.mp3");
+        const fehler = new Audio("fehler.mp3");
         let scorePlayerLeft = 0;
         let scorePlayerRight = 0;
         let paddleLeftY = 5;
@@ -89,7 +92,7 @@
 
         }
         function resetGame() {
-
+            fehler.play();
             ballDirectionY = 0;
             scorePlayerLeftDiv.innerText = scorePlayerLeft;
             scorePlayerRightDiv.innerText = scorePlayerRight;
@@ -98,7 +101,7 @@
         function playGame() {
 
             if (ballX > paddleRightX) {
-                if (ballY < paddleRightY || ballY > (paddleRightY + paddleHeight)) {
+                if ((ballY + ballHeight) < paddleRightY || ballY > (paddleRightY + paddleHeight)) {
                     scorePlayerLeft += 1;
                     ballX = paddleRightX;
                     ballY = paddleRightY + paddleHeight / 2;
@@ -109,12 +112,12 @@
                     if (spin != 0) {
                         ballDirectionY += spin;
                     }
-
+                    plop.play();
                     ballDirectionX = -ballSpeed;
                 }
             }
             if (ballX < paddleLeftX) {
-                if (ballY < paddleLeftY || ballY > (paddleLeftY + paddleHeight)) {
+                if ((ballY + ballHeight) < paddleLeftY || ballY > (paddleLeftY + paddleHeight)) {
                     scorePlayerRight += 1;
                     ballX = paddleLeftX;
                     ballY = paddleLeftY + paddleHeight / 2;
@@ -124,6 +127,7 @@
                     if (spin != 0) {
                         ballDirectionY += spin;
                     }
+                    plop.play();
                     ballDirectionX = ballSpeed;
                 }
             }

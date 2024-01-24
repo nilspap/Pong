@@ -90,40 +90,43 @@
         let ballY = 5;
         let ballDirectionY = 0;
         let ballDirectionX = ballSpeed;
-        let spin = 0;
+        let spinRight = 0;
+        let spinLeft = 0;
         paddleLeft.style.left = `${paddleLeftX}px`;
         paddleRight.style.left = `${paddleRightX}px`;
 
         document.onkeydown = function (ev) {
-            spin = 0;
+            spinRight = 0;
+            spinLeft = 0;
             if (ev.key == "s" && (paddleLeftY + paddleHeight) < gameHeight) {
 
                 paddleLeftY += paddleSpeed;
                 if (paddleLeftY > maxPaddleY) {
                     paddleLeftY = maxPaddleY;
                 }
-                spin = 1;
+                spinLeft = 1;
             }
             if (ev.key == "w" && (paddleLeftY) > minPaddleY) {
                 paddleLeftY -= paddleSpeed;
-                spin = -1;
+                spinLeft = -1;
             }
             if (ev.key == "ArrowDown" && (paddleRightY + paddleHeight) < gameHeight) {
                 paddleRightY += paddleSpeed;
                 if (paddleRightY > maxPaddleY) {
                     paddleRightY = maxPaddleY;
                 }
-                spin = 1;
+                spinRight = 1;
             }
             if (ev.key == "ArrowUp" && (paddleRightY) > minPaddleY) {
                 paddleRightY -= paddleSpeed;
-                spin = -1;
+                spinRight = -1;
             }
         }
         function resetGame() {
             fehler.play();
             ballDirectionY = 0;
-            spin = 0;
+            spinRight = 0;
+            spinLeft = 0;
             scorePlayerLeftDiv.innerText = scorePlayerLeft;
             scorePlayerRightDiv.innerText = scorePlayerRight;
         }
@@ -137,11 +140,10 @@
                     ballY = paddleRightY + paddleHeight / 2;
                     ballDirectionX = -ballSpeed;
                     resetGame();
-
                 } else {
-                    if (spin != 0) {
-                        ballDirectionY += spin;
-                        spin = 0;
+                    if (spinRight != 0) {
+                        ballDirectionY += spinRight;
+                        spinRight = 0;
                     }
                     plop.play();
                     ballDirectionX = -ballSpeed;
@@ -155,9 +157,9 @@
                     ballDirectionX = ballSpeed;
                     resetGame();
                 } else {
-                    if (spin != 0) {
-                        ballDirectionY += spin;
-                        spin = 0;
+                    if (spinLeft != 0) {
+                        ballDirectionY += spinLeft;
+                        spinLeft = 0;
                     }
                     plop.play();
                     ballDirectionX = ballSpeed;

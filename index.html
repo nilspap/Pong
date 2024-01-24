@@ -6,13 +6,13 @@
         .paddle {
             height: 50px;
             width: 5px;
-            background-color: black;
+            background-color: white;
             position: absolute;
         }
 
         #ball {
             position: absolute;
-            background-color: black;
+            background-color: white;
             width: 6px;
             height: 6px;
             border-radius: 3px;
@@ -21,7 +21,7 @@
         #scorePlayerLeft {
             left: 340px;
             text-align: right;
-            width: 50px;
+            width: 14, 3px;
         }
 
         #scorePlayerRight {
@@ -32,12 +32,21 @@
             font-size: xx-large;
             font-family: monospace;
             position: absolute;
+            color: white;
+        }
+
+        #gameFrame {
+            position: absolute;
+            width: 810px;
+            height: 200;
+            background-color: black;
         }
     </style>
 
 </head>
 
 <body>
+    <div id="gameFrame" />
     <div id="paddleLeft" class="paddle"></div>
     <div id="ball"></div>
     <div id="paddleRight" class="paddle"></div>
@@ -59,10 +68,12 @@
         const paddleRightX = gameWidth;
         const plop = new Audio("plop.mp3");
         const fehler = new Audio("fehler.mp3");
+        const minPaddleY = 5;
+        const maxPaddleY = gameHeight - paddleHeight - minPaddleY;
         let scorePlayerLeft = 0;
         let scorePlayerRight = 0;
-        let paddleLeftY = 5;
-        let paddleRightY = 5;
+        let paddleLeftY = minPaddleY;
+        let paddleRightY = minPaddleY;
         let ballX = gameWidth / 2;
         let ballY = 5;
         let ballDirectionY = 0;
@@ -73,23 +84,29 @@
 
         document.onkeydown = function (ev) {
             spin = 0;
-            if (ev.key == "s") {
+            if (ev.key == "s" && (paddleLeftY + paddleHeight) < gameHeight) {
+
                 paddleLeftY += paddleSpeed;
+                if (paddleLeftY > maxPaddleY) {
+                    paddleLeftY = maxPaddleY;
+                }
                 spin = 1;
             }
-            if (ev.key == "w") {
+            if (ev.key == "w" && (paddleLeftY) > minPaddleY) {
                 paddleLeftY -= paddleSpeed;
                 spin = -1;
             }
-            if (ev.key == "ArrowDown") {
+            if (ev.key == "ArrowDown" && (paddleRightY + paddleHeight) < gameHeight) {
                 paddleRightY += paddleSpeed;
+                if (paddleRightY > maxPaddleY) {
+                    paddleRightY = maxPaddleY;
+                }
                 spin = 1;
             }
-            if (ev.key == "ArrowUp") {
+            if (ev.key == "ArrowUp" && (paddleRightY) > minPaddleY) {
                 paddleRightY -= paddleSpeed;
                 spin = -1;
             }
-
         }
         function resetGame() {
             fehler.play();

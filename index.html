@@ -139,9 +139,16 @@
             scorePlayerLeftDiv.innerText = scorePlayerLeft;
             scorePlayerRightDiv.innerText = scorePlayerRight;
         }
+        let previousTimeStamp;
+        let elapsed = 0;
 
-        function playGame() {
-
+        function playGame(timeStamp) {
+            if (previousTimeStamp) {
+                elapsed = timeStamp - previousTimeStamp;
+                // Todo: multipliziere zeit zwischen 2 frames mit ballDirectionX
+                console.log(elapsed);
+            }
+            previousTimeStamp = timeStamp;
             if (ballX >= maxBallX) {
                 if ((ballY + ballSize) < paddleRightY || ballY > (paddleRightY + paddleHeight)) {
                     scorePlayerLeft += 1;

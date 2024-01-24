@@ -65,7 +65,8 @@
         const gameWidth = 800;
         const gameHeight = 200;
         const paddleHeight = 50;
-        const ballHeight = 6;
+        const paddleWidth = 5;
+        const ballSize = 6;
         const ballSpeed = 5;
         const paddleSpeed = 20;
         const paddleLeft = document.getElementById("paddleLeft");
@@ -79,6 +80,8 @@
         const fehler = new Audio("fehler.mp3");
         const minPaddleY = 5;
         const maxPaddleY = gameHeight - paddleHeight - minPaddleY;
+        const maxBallX = gameWidth - ballSize;
+        const minBallX = paddleLeftX + paddleWidth;
         let scorePlayerLeft = 0;
         let scorePlayerRight = 0;
         let paddleLeftY = minPaddleY;
@@ -126,8 +129,8 @@
 
         function playGame() {
 
-            if (ballX > paddleRightX) {
-                if ((ballY + ballHeight) < paddleRightY || ballY > (paddleRightY + paddleHeight)) {
+            if (ballX >= maxBallX) {
+                if ((ballY + ballSize) < paddleRightY || ballY > (paddleRightY + paddleHeight)) {
                     scorePlayerLeft += 1;
                     ballX = paddleRightX;
                     ballY = paddleRightY + paddleHeight / 2;
@@ -142,8 +145,8 @@
                     ballDirectionX = -ballSpeed;
                 }
             }
-            if (ballX < paddleLeftX) {
-                if ((ballY + ballHeight) < paddleLeftY || ballY > (paddleLeftY + paddleHeight)) {
+            if (ballX <= minBallX) {
+                if ((ballY + ballSize) < paddleLeftY || ballY > (paddleLeftY + paddleHeight)) {
                     scorePlayerRight += 1;
                     ballX = paddleLeftX;
                     ballY = paddleLeftY + paddleHeight / 2;
@@ -165,6 +168,12 @@
             ballY += ballDirectionY;
             ball.style.top = `${ballY}px`;
             ballX += ballDirectionX;
+            if (ballX > maxBallX) {
+                ballX = maxBallX;
+            }
+            if (ballX < minBallX) {
+                ballX = minBallX
+            }
             ball.style.left = `${ballX}px`;
             window.requestAnimationFrame(playGame);
         }

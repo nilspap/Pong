@@ -82,12 +82,13 @@
         const maxPaddleY = gameHeight - paddleHeight - minPaddleY;
         const maxBallX = gameWidth - ballSize;
         const minBallX = paddleLeftX + paddleWidth;
+        const startpoint = gameHeight / 2 - paddleHeight / 2;
         let scorePlayerLeft = 0;
         let scorePlayerRight = 0;
-        let paddleLeftY = minPaddleY;
-        let paddleRightY = minPaddleY;
+        let paddleLeftY = startpoint;
+        let paddleRightY = startpoint;
         let ballX = gameWidth / 2;
-        let ballY = 5;
+        let ballY = startpoint + paddleHeight / 2;
         let ballDirectionY = 0;
         let ballDirectionX = ballSpeed;
         let spinRight = 0;
@@ -104,12 +105,17 @@
                 if (paddleLeftY > maxPaddleY) {
                     paddleLeftY = maxPaddleY;
                 }
+
                 spinLeft = 1;
             }
             if (ev.key == "w" && (paddleLeftY) > minPaddleY) {
                 paddleLeftY -= paddleSpeed;
+                if (paddleLeftY < minPaddleY) {
+                    paddleLeftY = minPaddleY;
+                }
                 spinLeft = -1;
             }
+
             if (ev.key == "ArrowDown" && (paddleRightY + paddleHeight) < gameHeight) {
                 paddleRightY += paddleSpeed;
                 if (paddleRightY > maxPaddleY) {
@@ -119,6 +125,9 @@
             }
             if (ev.key == "ArrowUp" && (paddleRightY) > minPaddleY) {
                 paddleRightY -= paddleSpeed;
+                if (paddleRightY < minPaddleY) {
+                    paddleRightY = minPaddleY;
+                }
                 spinRight = -1;
             }
         }
